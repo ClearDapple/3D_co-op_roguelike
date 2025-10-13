@@ -1,21 +1,83 @@
+using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
-using Unity.VisualScripting;
 using UnityEngine.UIElements;
 
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private UIDocument uiDocument;
     private VisualElement root;
-    private VisualElement slot1, slot2, slot3, slot4, slot5;
+
+    private List<VisualElement> slotElements = new();
+    private List<Label> quantityLabels = new();
+
+    private VisualElement draggedSlot = null;
+    private int draggedIndex = -1;
+
+    public Inventory inventory;
 
 
     void Awake()
     {
         root = uiDocument.rootVisualElement;
-        slot1 = root.Q<VisualElement>("Slot1");
-        slot2 = root.Q<VisualElement>("Slot2");
-        slot3 = root.Q<VisualElement>("Slot3");
-        slot4 = root.Q<VisualElement>("Slot4");
-        slot5 = root.Q<VisualElement>("Slot5");
+
+        slotElements.Add(root.Q<VisualElement>("Slot1"));
+        slotElements.Add(root.Q<VisualElement>("Slot2"));
+        slotElements.Add(root.Q<VisualElement>("Slot3"));
+        slotElements.Add(root.Q<VisualElement>("Slot4"));
+        slotElements.Add(root.Q<VisualElement>("Slot5"));
+
+        quantityLabels.Add(root.Q<Label>("Text1"));
+        quantityLabels.Add(root.Q<Label>("Text2"));
+        quantityLabels.Add(root.Q<Label>("Text3"));
+        quantityLabels.Add(root.Q<Label>("Text4"));
+        quantityLabels.Add(root.Q<Label>("Text5"));
+
+        for (int i = 0; i < slotElements.Count; i++)
+        {
+            RegisterSlotEvents(slotElements[i], i);
+        }
     }
+
+    void RegisterSlotEvents(VisualElement slot, int index)
+    {
+        slot.RegisterCallback<PointerDownEvent>(evt =>
+        {
+            draggedSlot = slot;
+            draggedIndex = index;
+            slot.style.borderTopColor = Color.yellow;
+            slot.style.borderTopWidth = 2;
+        });
+
+        slot.RegisterCallback<PointerUpEvent>(evt =>
+        {
+            if (draggedSlot != null && draggedSlot != slot)
+            {
+                inventory.SwapSlots(draggedIndex, index);
+                Refresh();
+            }
+
+            // √ ±‚»≠
+            draggedSlot.style.borderTopWidth = 0;
+            draggedSlot = null;
+            draggedIndex = -1;
+        });
+    }
+
+public void Refresh()
+{
+    for (int i = 0; i < slotElements.Count; i++)
+    {
+        if (i < inventory.slots.Count && inventory.slots[i].itemData != null)
+        {
+            slotElements[i].style.backgroundImage = inventory.slots[i].itemData.icon.texture;
+            quantityLabels[i].text = $"{inventory.slots[i].quantity}/{inventory.slots[i].itemData.maxStack}";
+        }
+        else
+        {
+            slotElements[i].style.backgroundImage = null;
+            quantityLabels[i].text = "";
+        }
+    }
+}
 }

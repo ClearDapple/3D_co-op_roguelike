@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c63bd8ee86eb2f469f516c29ce6e46b, type: 3}
+  m_Name: CubeG
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
+  itemID: 2
+  itemName: "\uCDA9\uC804\uD615 \uBB3C\uC57D"
+  itemType: 4
+  itemPrefab: {fileID: 275197814840762009, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
+  icon: {fileID: 21300000, guid: e5927d34bcb117e4d926ebb1f60a40ee, type: 3}
+  maxStack: 2
+  description: "\uCD08\uB85D \uBB3C\uC57D. \uBA5C\uB860\uB9DB\uC774 \uB09C\uB2E4."

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c63bd8ee86eb2f469f516c29ce6e46b, type: 3}
+  m_Name: CubeR
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
+  itemID: 3
+  itemName: "\uB8E8\uBE44 \uC218\uC815"
+  itemType: 2
+  itemPrefab: {fileID: 4441584937730617031, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
+  icon: {fileID: 21300000, guid: 247a552f7af1b7246abe3df2eaf8204e, type: 3}
+  maxStack: 1
+  description: "\uBD89\uC740\uC0C9 \uB8E8\uBE44 \uC218\uC815. \uC0AC\uC6A9\uC2DC
+    \uD718\uB450\uB978\uB2E4."

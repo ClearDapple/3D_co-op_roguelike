@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class ItemDataHolder : MonoBehaviour
 {
-    public ItemData itemData;
+    public ItemDataSO itemData;
 }
