@@ -1,60 +1,86 @@
+using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public InventoryUI inventoryUI;
     public List<ItemSlot> slots = new List<ItemSlot>();
     public int maxSlots = 5;
 
-    public bool TryAddItem(ItemDataSO newItem)
+
+    public int TryAddItem(ItemDataSO newItem, int itemStack)
     {
-        // 1. 같은 아이템이 있고 스택이 안 찼으면 → 수량 증가
+        // 0. 빈 공간 계산
+        int emptySpace = 0;
         foreach (ItemSlot slot in slots)
         {
             if (slot.IsSameItem(newItem) && !slot.IsFull)
             {
-                slot.quantity++;
-                Debug.Log($"[스택 증가] {newItem.itemName} → {slot.quantity}/{newItem.maxStack}");
-                inventoryUI.Refresh(); // UI 갱신
-                return true;
+                emptySpace += (newItem.maxStack - slot.quantity);
             }
         }
+        int emptySlots = maxSlots - slots.Count;
+        emptySpace += emptySlots * newItem.maxStack;
 
-        // 2. 같은 아이템이 있지만 모두 스택이 가득 찼음
-        bool hasSameItem = slots.Exists(s => s.IsSameItem(newItem));
-        if (hasSameItem)
+        // 0-1. 빈 공간 없음
+        if (emptySpace <= 0)
         {
-            if (slots.Count < maxSlots) // 빈칸 있음
-            {
-                // → 새 슬롯 추가
-                ItemSlot newSlot = new ItemSlot { itemData = newItem, quantity = 1 };
-                slots.Add(newSlot);
-                Debug.Log($"[새 슬롯 추가] {newItem.itemName} → 1/{newItem.maxStack}");
-                inventoryUI.Refresh(); // UI 갱신
-                return true;
-            }
-            else // 빈칸 없음
-            {
-                // → 줍기 실패
-                Debug.LogWarning($"[실패] {newItem.itemName}");
-                return false;
-            }
+            Debug.LogWarning($"[실패: 빈 공간 없음] {newItem.itemName} x{itemStack}");
+            return itemStack;
         }
-
-        // 3. 아이템이 없고 빈 슬롯이 있다면 → 새 슬롯 추가
-        if (slots.Count < maxSlots)
+        else
         {
-            ItemSlot newSlot = new ItemSlot { itemData = newItem, quantity = 1 };
-            slots.Add(newSlot);
-            Debug.Log($"[새 아이템 추가] {newItem.itemName} → 1/{newItem.maxStack}");
-            inventoryUI.Refresh(); // UI 갱신
-            return true;
-        }
+            // 1. 아이템을 기존 슬롯에 추가
+            foreach (ItemSlot slot in slots)
+            {
+                if (slot.IsSameItem(newItem) && !slot.IsFull)
+                {
+                    // 남은 아이템 수량이 기존 슬롯에 꽉 찰 수 있는 경우
+                    if (itemStack >= newItem.maxStack - slot.quantity)
+                    {
+                        itemStack -= (newItem.maxStack - slot.quantity);
+                        slot.quantity = newItem.maxStack;
 
-        // 4. 아이템 없고 빈 슬롯도 없음 → 줍기 실패
-        Debug.LogWarning($"[실패] {newItem.itemName}");
-        return false;
+                        // 남은 아이템 수량 없음
+                        if (itemStack <= 0) { return itemStack; }
+                    }
+                    // 남은 아이템 수량이 기존 슬롯에 꽉 차지 않는 경우
+                    else
+                    {
+                        slot.quantity += itemStack;
+                        itemStack = 0;
+                        return itemStack;
+                    }
+                }
+            }
+
+            // 2. 남은 아이템을 새 슬롯에 추가
+            while (maxSlots > slots.Count)
+            {
+                // 남은 아이템 수량이 새 슬롯에 꽉 찰 수 있는 경우
+                if (itemStack >= newItem.maxStack)
+                {
+                    ItemSlot newSlot = new ItemSlot { itemData = newItem, quantity = newItem.maxStack };
+                    slots.Add(newSlot);
+                    itemStack -= newItem.maxStack;
+                }
+                // 남은 아이템 수량이 새 슬롯에 꽉 차지 않는 경우
+                else if (itemStack > 0)
+                {
+                    ItemSlot newSlot = new ItemSlot { itemData = newItem, quantity = itemStack };
+                    slots.Add(newSlot);
+                    itemStack = 0;
+                    return itemStack;
+                }
+                // 남은 아이템 수량 없음
+                else
+                {
+                    return itemStack;
+                }
+            }
+
+            return itemStack;
+        }
     }
 
     public void SwapSlots(int indexA, int indexB)
@@ -64,6 +90,6 @@ public class Inventory : MonoBehaviour
         var temp = slots[indexA];
         slots[indexA] = slots[indexB];
         slots[indexB] = temp;
-        inventoryUI.Refresh(); // UI 갱신
+        UIManager.Instance.inventoryUI.Refresh(); // UI 갱신
     }
 }

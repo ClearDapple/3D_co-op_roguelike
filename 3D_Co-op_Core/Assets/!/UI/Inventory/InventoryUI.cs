@@ -70,7 +70,7 @@ public void Refresh()
     {
         if (i < inventory.slots.Count && inventory.slots[i].itemData != null)
         {
-            slotElements[i].style.backgroundImage = inventory.slots[i].itemData.icon.texture;
+            slotElements[i].style.backgroundImage = inventory.slots[i].itemData.itemIcon.texture;
             quantityLabels[i].text = $"{inventory.slots[i].quantity}/{inventory.slots[i].itemData.maxStack}";
         }
         else

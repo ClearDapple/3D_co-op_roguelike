@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: "\uC0AC\uD30C\uC774\uC5B4 \uC218\uC815"
   itemType: 0
   itemPrefab: {fileID: 5178742268636204790, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
-  icon: {fileID: 21300000, guid: 2e37dccf71c407f4d9bf6929167789ca, type: 3}
+  itemIcon: {fileID: 21300000, guid: 2e37dccf71c407f4d9bf6929167789ca, type: 3}
+  itemStack: 0
   maxStack: 3
   description: "\uD30C\uB780\uC0C9 \uC0AC\uD30C\uC774\uC5B4 \uC218\uC815. \uC18C\uC9C0\uC790\uC758
     \uB9C8\uB098\uB97C \uC870\uAE08 \uB298\uB824\uC900\uB2E4."

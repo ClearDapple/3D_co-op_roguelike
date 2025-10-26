@@ -7,7 +7,8 @@ public class ItemDataSO : ScriptableObject
     public string itemName;       //이름
     public ItemType itemType;     //아이템 타입
     public GameObject itemPrefab; //프리팹
-    public Sprite icon;           //아이콘
+    public Sprite itemIcon;       //아이콘
+    public int itemStack;         //현재 쌓여있는 개수
     public int maxStack;          //최대 쌓을 수 있는 개수
     public string description;    //설명
 }

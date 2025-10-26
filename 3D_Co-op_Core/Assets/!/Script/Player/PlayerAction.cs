@@ -3,10 +3,9 @@ using UnityEngine;
 public class PlayerAction : MonoBehaviour
 {
     [SerializeField] Inventory inventory;
-    [SerializeField] TestUI testUI;
     public LayerMask ItemLayer;
+    GameObject hitItem;
     public float pickupRange = 3f;
-
 
     void Update()
     {
@@ -17,14 +16,27 @@ public class PlayerAction : MonoBehaviour
         {
             if (hit.collider.CompareTag("Item"))
             {
-                if (testUI.Color!= Color.red) testUI.ChangeColor(Color.red); // test
+                if (hit.collider.gameObject != hitItem || hitItem == null)
+                {
+                    hitItem = hit.collider.gameObject;
+                    ItemDataHolder itemData = hitItem.GetComponent<ItemDataHolder>();
+                    if (itemData != null)
+                    {
+                        UIManager.Instance.objectCheckUI.ItemCheckUI(itemData);
+                    }
+                }
+
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     PickUp(hit.collider.gameObject);
                 }
             }
         }
-        else if (testUI.Color != Color.black) testUI.ChangeColor(Color.black); // test
+        else if (hitItem != null)
+        {
+            hitItem = null;
+            UIManager.Instance.objectCheckUI.CloseItemCheckUI();
+        }
     }
 
     void PickUp(GameObject itemObject)
@@ -36,14 +48,25 @@ public class PlayerAction : MonoBehaviour
             return;
         }
 
-        bool success = inventory.TryAddItem(holder.itemData);
-        if (success)
+        int remainItemStack = inventory.TryAddItem(holder.itemData, holder.currentStack);
+        if (remainItemStack <= 0)
         {
-            Destroy(itemObject); // 성공 시 오브젝트 제거
+            Debug.Log("{holder.itemData} 아이템 모두 획득함.");
+            holder.DestorySelf();
         }
         else
         {
-            Debug.Log("인벤토리 공간이 부족합니다.");
+            if (remainItemStack == holder.currentStack)
+            {
+                Debug.Log("{holder.itemData} 아이템 획득 불가능. 인벤토리 공간이 부족합니다.");
+                UIManager.Instance.systemMessageUI.ShowMessage("공간이 부족합니다!");
+            }
+            else
+            {
+                Debug.Log($"{holder.itemData} 아이템 {holder.currentStack - remainItemStack} 획득함. 남은 개수: {remainItemStack}");
+                holder.itemData.itemStack = remainItemStack;
+            }
         }
+        UIManager.Instance.inventoryUI.Refresh();
     }
 }
