@@ -21,6 +21,14 @@ public class InventoryUI : MonoBehaviour
     {
         root = uiDocument.rootVisualElement;
 
+
+        Debug.Log(root == null ? "rootVisualElement is null" : "rootVisualElement 로드됨");
+        var slot1 = root.Q<VisualElement>("Slot1");
+        Debug.Log(slot1 == null ? "Slot1 is null" : "Slot1 로드됨");
+        slot1.RegisterCallback<PointerDownEvent>(evt => Debug.Log("Slot1 클릭됨"));
+
+
+
         slotElements.Add(root.Q<VisualElement>("Slot1"));
         slotElements.Add(root.Q<VisualElement>("Slot2"));
         slotElements.Add(root.Q<VisualElement>("Slot3"));
@@ -36,48 +44,62 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < slotElements.Count; i++)
         {
             RegisterSlotEvents(slotElements[i], i);
+
+            Debug.Log($"Slot{i + 1} display: {slotElements[i].resolvedStyle.display}");
+            Debug.Log($"Slot{i + 1} visibility: {slotElements[i].resolvedStyle.visibility}");
+            Debug.Log($"Slot{i + 1} opacity: {slotElements[i].resolvedStyle.opacity}");
         }
     }
 
-    void RegisterSlotEvents(VisualElement slot, int index)
+    private void RegisterSlotEvents(VisualElement slot, int index)
     {
+        Debug.Log($"슬롯 {index} pickingMode 설정됨");
+        slot.pickingMode = PickingMode.Position;
+
         slot.RegisterCallback<PointerDownEvent>(evt =>
         {
+            Debug.Log($"슬롯 {index} 클릭됨");
             draggedSlot = slot;
             draggedIndex = index;
+
+            // 드래그 시작 시 시각적 피드백
             slot.style.borderTopColor = Color.yellow;
             slot.style.borderTopWidth = 2;
         });
 
         slot.RegisterCallback<PointerUpEvent>(evt =>
         {
+            Debug.Log($"슬롯 {index} 클릭됨");
             if (draggedSlot != null && draggedSlot != slot)
             {
                 inventory.SwapSlots(draggedIndex, index);
                 Refresh();
             }
 
-            // 초기화
-            draggedSlot.style.borderTopWidth = 0;
-            draggedSlot = null;
-            draggedIndex = -1;
+            // 드래그 상태 초기화
+            if (draggedSlot != null)
+            {
+                draggedSlot.style.borderTopWidth = 0;
+                draggedSlot = null;
+                draggedIndex = -1;
+            }
         });
     }
 
-public void Refresh()
-{
-    for (int i = 0; i < slotElements.Count; i++)
+    public void Refresh()
     {
-        if (i < inventory.slots.Count && inventory.slots[i].itemData != null)
+        for (int i = 0; i < slotElements.Count; i++)
         {
-            slotElements[i].style.backgroundImage = inventory.slots[i].itemData.itemIcon.texture;
-            quantityLabels[i].text = $"{inventory.slots[i].quantity}/{inventory.slots[i].itemData.maxStack}";
-        }
-        else
-        {
-            slotElements[i].style.backgroundImage = null;
-            quantityLabels[i].text = "";
+            if (i < inventory.slots.Count && inventory.slots[i].itemData != null)
+            {
+                slotElements[i].style.backgroundImage = inventory.slots[i].itemData.itemIcon.texture;
+                quantityLabels[i].text = $"{inventory.slots[i].quantity}/{inventory.slots[i].itemData.maxStack}";
+            }
+            else
+            {
+                slotElements[i].style.backgroundImage = null;
+                quantityLabels[i].text = "";
+            }
         }
     }
-}
 }

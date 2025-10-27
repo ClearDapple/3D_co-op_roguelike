@@ -1,43 +1,55 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
     [SerializeField] Inventory inventory;
-    public LayerMask ItemLayer;
-    GameObject hitItem;
-    public float pickupRange = 3f;
+    public LayerMask interactableLayer;
+    GameObject hitObject;
+    public float interactionRange = 3f;
 
     void Update()
     {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, pickupRange, ItemLayer))
+        if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
         {
-            if (hit.collider.CompareTag("Item"))
+            if (interactableLayer.Contains(hit.collider.gameObject.layer)) //레이어가 상호작용 레이어인지 확인
             {
-                if (hit.collider.gameObject != hitItem || hitItem == null)
+                if (hit.collider.gameObject.activeInHierarchy) //오브젝트가 활성화 되어있는지 확인
                 {
-                    hitItem = hit.collider.gameObject;
-                    ItemDataHolder itemData = hitItem.GetComponent<ItemDataHolder>();
-                    if (itemData != null)
+                    if (hit.collider.CompareTag("Item")) //태그가 아이템인지 확인
                     {
-                        UIManager.Instance.objectCheckUI.ItemCheckUI(itemData);
+                        if (hitObject == null || hit.collider.gameObject != hitObject) //새로운 오브젝트에 레이캐스트가 맞은경우
+                        {
+                            hitObject = hit.collider.gameObject;
+                            ItemDataHolder itemData = hitObject.GetComponent<ItemDataHolder>();
+                            if (itemData != null)
+                            {
+                                UIManager.Instance.objectCheckUI.ItemCheckUI(itemData);
+                            }
+                        }
+                        if (hitObject!= null && Input.GetKeyDown(KeyCode.E)) //E키를 눌렀을때
+                        {
+                            PickUp(hit.collider.gameObject);
+                        }
                     }
+                    else { ClearInteraction(); } //태그가 아이템이 아닌경우
                 }
-
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    PickUp(hit.collider.gameObject);
-                }
+                else { ClearInteraction(); } //오브젝트가 비활성화 되어있는경우
             }
+            else { ClearInteraction(); } //레이어가 상호작용 레이어가 아닌경우
         }
-        else if (hitItem != null)
-        {
-            hitItem = null;
-            UIManager.Instance.objectCheckUI.CloseItemCheckUI();
-        }
+        else { ClearInteraction(); } //레이캐스트에 맞지 않은경우
     }
+
+    void ClearInteraction()
+    {
+        hitObject = null;
+        UIManager.Instance.objectCheckUI.CloseItemCheckUI();
+    }
+
 
     void PickUp(GameObject itemObject)
     {

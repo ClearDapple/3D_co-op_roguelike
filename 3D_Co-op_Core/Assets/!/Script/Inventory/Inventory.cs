@@ -86,10 +86,10 @@ public class Inventory : MonoBehaviour
     public void SwapSlots(int indexA, int indexB)
     {
         if (indexA == indexB) return;
+        if (indexA < 0 || indexB < 0 || indexA >= slots.Count || indexB >= slots.Count) return;
 
         var temp = slots[indexA];
         slots[indexA] = slots[indexB];
         slots[indexB] = temp;
-        UIManager.Instance.inventoryUI.Refresh(); // UI °»½Å
     }
 }
