@@ -1,5 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Reticle" style="flex-grow: 1; flex-direction: row; align-self: auto; justify-content: center; align-items: center;">
-        <ui:VisualElement name="CrosshairPoint" style="flex-grow: 0; flex-shrink: 0; width: 96px; height: 96px; background-image: url(&quot;project://database/Assets/!/sprite/System/icons8-crosshair-96.png?fileID=2800000&amp;guid=6cb311a90025b024483679778f620eb1&amp;type=3#icons8-crosshair-96&quot;);" />
+    <ui:VisualElement name="Reticle" picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; align-self: auto; justify-content: center; align-items: center;">
+        <ui:VisualElement name="CrosshairPoint" picking-mode="Ignore" style="flex-grow: 0; flex-shrink: 0; width: 96px; height: 96px; background-image: url(&quot;project://database/Assets/!/sprite/System/icons8-crosshair-96.png?fileID=2800000&amp;guid=6cb311a90025b024483679778f620eb1&amp;type=3#icons8-crosshair-96&quot;);" />
     </ui:VisualElement>
 </ui:UXML>

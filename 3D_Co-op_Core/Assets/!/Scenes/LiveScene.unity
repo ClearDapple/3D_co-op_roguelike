@@ -147,7 +147,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1593034169}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &209614836
@@ -338,7 +339,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2000117085}
   m_Father: {fileID: 917155358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
@@ -828,6 +830,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeG (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1719697032820949712, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
+      propertyPath: currentStack
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2658416110266461658, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.8399997
@@ -1080,7 +1086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb740ea9790b3dc4fa9dcc8fc0e26c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAction
-  inventory: {fileID: 1885459580}
   interactableLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -1284,6 +1289,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4948706438424356679, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
+      propertyPath: currentStack
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5178742268636204790, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
       propertyPath: m_Name
       value: CubeB
@@ -1449,6 +1458,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2122472955}
     m_Modifications:
+    - target: {fileID: 2836005342863069979, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
+      propertyPath: currentStack
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4441584937730617031, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
       propertyPath: m_Name
       value: CubeR
@@ -1606,6 +1619,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4948706438424356679, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
+      propertyPath: currentStack
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5178742268636204790, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
       propertyPath: m_Name
       value: CubeB (2)
@@ -1631,6 +1648,10 @@ PrefabInstance:
     - target: {fileID: 275197814840762009, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
       propertyPath: m_Name
       value: CubeG
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719697032820949712, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
+      propertyPath: currentStack
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2658416110266461658, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1682,6 +1703,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2658416110266461658, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
   m_PrefabInstance: {fileID: 1574137180}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1593034168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1593034169}
+  - component: {fileID: 1593034170}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1593034169
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593034168}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 45134278}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1593034170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593034168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9be39aa7dc30c0441af18ec245cbfa60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
 --- !u!1001 &1639987807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1690,6 +1755,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2122472955}
     m_Modifications:
+    - target: {fileID: 2836005342863069979, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
+      propertyPath: currentStack
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4441584937730617031, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
       propertyPath: m_Name
       value: CubeR (2)
@@ -1874,6 +1943,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2122472955}
     m_Modifications:
+    - target: {fileID: 2836005342863069979, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
+      propertyPath: currentStack
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4441584937730617031, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
       propertyPath: m_Name
       value: CubeR (1)
@@ -2009,6 +2082,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4948706438424356679, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
+      propertyPath: currentStack
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5178742268636204790, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
       propertyPath: m_Name
       value: CubeB (1)
@@ -2097,6 +2174,7 @@ GameObject:
   - component: {fileID: 1885459579}
   - component: {fileID: 1885459580}
   - component: {fileID: 1885459578}
+  - component: {fileID: 1885459582}
   m_Layer: 0
   m_Name: InventoryUI
   m_TagString: Untagged
@@ -2132,7 +2210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryUI
   uiDocument: {fileID: 1885459579}
-  inventory: {fileID: 1885459580}
 --- !u!114 &1885459579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2169,6 +2246,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   maxSlots: 5
+--- !u!114 &1885459582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885459576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17a9d66ce794f7a4691ed85f4843f2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragIconController
 --- !u!1 &1905385067
 GameObject:
   m_ObjectHideFlags: 0
@@ -2376,6 +2465,51 @@ Transform:
   - {fileID: 832575519}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2000117084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2000117085}
+  - component: {fileID: 2000117086}
+  m_Layer: 0
+  m_Name: HandPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2000117085
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000117084}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4, y: -0.3, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 330585546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2000117086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000117084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7928b62757963ea408465aa2912b2b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
+  handTransform: {fileID: 2000117085}
 --- !u!1 &2007918022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2458,6 +2592,10 @@ PrefabInstance:
     - target: {fileID: 275197814840762009, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
       propertyPath: m_Name
       value: CubeG (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719697032820949712, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
+      propertyPath: currentStack
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2658416110266461658, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
       propertyPath: m_LocalPosition.x

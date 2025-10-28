@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,21 +12,14 @@ public class InventoryUI : MonoBehaviour
 
     private VisualElement draggedSlot = null;
     private int draggedIndex = -1;
-
-    public Inventory inventory;
+    
+    private VisualElement hoveredSlot = null;
+    private int hoveredIndex = -1;
 
 
     void Awake()
     {
         root = uiDocument.rootVisualElement;
-
-
-        Debug.Log(root == null ? "rootVisualElement is null" : "rootVisualElement 로드됨");
-        var slot1 = root.Q<VisualElement>("Slot1");
-        Debug.Log(slot1 == null ? "Slot1 is null" : "Slot1 로드됨");
-        slot1.RegisterCallback<PointerDownEvent>(evt => Debug.Log("Slot1 클릭됨"));
-
-
 
         slotElements.Add(root.Q<VisualElement>("Slot1"));
         slotElements.Add(root.Q<VisualElement>("Slot2"));
@@ -44,62 +36,105 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < slotElements.Count; i++)
         {
             RegisterSlotEvents(slotElements[i], i);
-
-            Debug.Log($"Slot{i + 1} display: {slotElements[i].resolvedStyle.display}");
-            Debug.Log($"Slot{i + 1} visibility: {slotElements[i].resolvedStyle.visibility}");
-            Debug.Log($"Slot{i + 1} opacity: {slotElements[i].resolvedStyle.opacity}");
         }
-    }
 
-    private void RegisterSlotEvents(VisualElement slot, int index)
-    {
-        Debug.Log($"슬롯 {index} pickingMode 설정됨");
-        slot.pickingMode = PickingMode.Position;
-
-        slot.RegisterCallback<PointerDownEvent>(evt =>
+        root.RegisterCallback<PointerUpEvent>(evt =>
         {
-            Debug.Log($"슬롯 {index} 클릭됨");
-            draggedSlot = slot;
-            draggedIndex = index;
+            DragIconController.Instance.Hide();
 
-            // 드래그 시작 시 시각적 피드백
-            slot.style.borderTopColor = Color.yellow;
-            slot.style.borderTopWidth = 2;
-        });
-
-        slot.RegisterCallback<PointerUpEvent>(evt =>
-        {
-            Debug.Log($"슬롯 {index} 클릭됨");
-            if (draggedSlot != null && draggedSlot != slot)
+            if (draggedSlot != null && hoveredSlot != null && draggedSlot != hoveredSlot)
             {
-                inventory.SwapSlots(draggedIndex, index);
+                Debug.Log($"슬롯 교환 시도: {draggedIndex+1} ↔ {hoveredIndex+1}");
+                GameManager.Instance.inventory.SwapSlots(draggedIndex, hoveredIndex);
                 Refresh();
             }
 
-            // 드래그 상태 초기화
             if (draggedSlot != null)
             {
                 draggedSlot.style.borderTopWidth = 0;
                 draggedSlot = null;
                 draggedIndex = -1;
             }
+
+            hoveredSlot = null;
+        });
+    }
+
+    private void RegisterSlotEvents(VisualElement slot, int index)
+    {
+        slot.pickingMode = PickingMode.Position;
+
+        slot.RegisterCallback<PointerDownEvent>(evt =>
+        {
+            Debug.Log($"슬롯 {index+1} 클릭됨");
+            draggedSlot = slot;
+            draggedIndex = index;
+
+            // 인덱스 유효성 검사
+            var slots = GameManager.Instance.inventory.slots;
+            if (index >= 0 && index < slots.Count)
+            {
+                var itemData = slots[index].itemData;
+
+                // 드래그 아이콘 표시
+                if (itemData != null)
+                {
+                    DragIconController.Instance.Show(itemData.itemIcon);
+                }
+            }
+
+            // 드래그 시작 시 시각적 피드백
+            slot.style.borderTopColor = Color.yellow;
+            slot.style.borderTopWidth = 2;
+        });
+
+        slot.RegisterCallback<PointerEnterEvent>(evt =>
+        {
+            hoveredSlot = slot;
+            hoveredIndex = index;
+            Debug.Log($"PointerEnter 발생: {slot.name}, index={index}");
+        });
+
+        slot.RegisterCallback<PointerLeaveEvent>(evt =>
+        {
+            if (hoveredSlot == slot)
+            {
+                hoveredSlot = null;
+                hoveredIndex = -1;
+            }
         });
     }
 
     public void Refresh()
     {
-        for (int i = 0; i < slotElements.Count; i++)
+        var slots = GameManager.Instance.inventory.slots;
+
+        for (int i = 0; i < slotElements.Count; i++) // 모든 UI 슬롯 요소를 순회하면서 UI를 갱신
         {
-            if (i < inventory.slots.Count && inventory.slots[i].itemData != null)
+            if (i < slots.Count && slots[i] != null) // 슬롯이 존재하는 경우
             {
-                slotElements[i].style.backgroundImage = inventory.slots[i].itemData.itemIcon.texture;
-                quantityLabels[i].text = $"{inventory.slots[i].quantity}/{inventory.slots[i].itemData.maxStack}";
+                var itemData = slots[i].itemData;
+
+                if (itemData != null) // 아이템이 있는 경우
+                {
+                    slotElements[i].style.backgroundImage = itemData.itemIcon.texture; // 아이콘 표시
+                    quantityLabels[i].text = $"{slots[i].quantity}/{itemData.maxStack}"; // 수량 표시
+                    Debug.Log($"[Refresh] 슬롯 {i}: {itemData.itemName} ({slots[i].quantity}/{itemData.maxStack})");
+                }
+                else // 아이템이 없는 경우 (빈 슬롯)
+                {
+                    slotElements[i].style.backgroundImage = null; // 아이콘 제거
+                    quantityLabels[i].text = ""; // 수량 제거
+                    Debug.Log($"[Refresh] 슬롯 {i}: 빈 슬롯");
+                }
             }
-            else
+            else // 슬롯 자체가 없거나 범위를 벗어난 경우
             {
-                slotElements[i].style.backgroundImage = null;
-                quantityLabels[i].text = "";
+                slotElements[i].style.backgroundImage = null; // 아이콘 제거
+                quantityLabels[i].text = ""; // 수량 제거
+                Debug.Log($"[Refresh] 슬롯 {i}: 슬롯 없음");
             }
         }
+        GameManager.Instance.equipmentManager.RefreshEquipItem(); // 장비창 UI도 함께 갱신
     }
 }

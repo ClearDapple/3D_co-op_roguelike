@@ -22,6 +22,7 @@ public class SystemMessageUI : MonoBehaviour
 
     private void Start()
     {
+        root.pickingMode = PickingMode.Ignore;
         ToastMessage.style.opacity = 0;
         ToastMessage.style.display = DisplayStyle.None;
     }
