@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 public class InventoryUI : MonoBehaviour
@@ -40,24 +40,57 @@ public class InventoryUI : MonoBehaviour
 
         root.RegisterCallback<PointerUpEvent>(evt =>
         {
+
             DragIconController.Instance.Hide();
 
-            if (draggedSlot != null && hoveredSlot != null && draggedSlot != hoveredSlot)
+            if (draggedSlot == null)
             {
-                Debug.Log($"슬롯 교환 시도: {draggedIndex+1} ↔ {hoveredIndex+1}");
-                GameManager.Instance.inventory.SwapSlots(draggedIndex, hoveredIndex);
-                Refresh();
+                Debug.Log("[실패] 선택된 슬롯이 없습니다.");
+                return;
             }
 
-            if (draggedSlot != null)
+            if (ScriptManager.Instance.inventory.slots[draggedIndex].itemData == null)
             {
-                draggedSlot.style.borderTopWidth = 0;
-                draggedSlot = null;
-                draggedIndex = -1;
+                Debug.Log($"[실패] {draggedIndex + 1}번 슬롯은 빈 슬롯 입니다.");
+                ClearSlotTopColor();
+                return;
             }
 
-            hoveredSlot = null;
+            if (draggedSlot != hoveredSlot)
+            {
+                if (hoveredSlot != null)
+                {
+                    Debug.Log($"슬롯 교환 시도: {draggedIndex + 1} ↔ {hoveredIndex + 1}");
+                    ScriptManager.Instance.inventory.SwapSlots(draggedIndex, hoveredIndex);
+                    Refresh();
+                }
+                else
+                {
+                    Debug.Log($"슬롯 아이템 드롭 시도: {draggedIndex + 1} ↔ 드롭됨");
+                    var slots = ScriptManager.Instance.inventory.slots[draggedIndex];
+                    var itemData = slots.itemData;
+                    var quantity = slots.quantity;
+
+                    Debug.Log($"[아이템 드롭됨] {draggedIndex + 1}번 슬롯: {itemData.itemName} x{quantity}");
+                    ScriptManager.Instance.itemDropManager.DropItem_UI(itemData, quantity);
+                    ScriptManager.Instance.inventory.ClearSlot(draggedIndex);
+                    Refresh();
+                }
+            }
+            ClearSlotTopColor();
         });
+    }
+
+    void ClearSlotTopColor()
+    {
+        if (draggedSlot != null)
+        {
+            draggedSlot.style.borderTopWidth = 0;
+            draggedSlot = null;
+            draggedIndex = -1;
+        }
+
+        hoveredSlot = null;
     }
 
     private void RegisterSlotEvents(VisualElement slot, int index)
@@ -71,7 +104,7 @@ public class InventoryUI : MonoBehaviour
             draggedIndex = index;
 
             // 인덱스 유효성 검사
-            var slots = GameManager.Instance.inventory.slots;
+            var slots = ScriptManager.Instance.inventory.slots;
             if (index >= 0 && index < slots.Count)
             {
                 var itemData = slots[index].itemData;
@@ -92,7 +125,7 @@ public class InventoryUI : MonoBehaviour
         {
             hoveredSlot = slot;
             hoveredIndex = index;
-            Debug.Log($"PointerEnter 발생: {slot.name}, index={index}");
+            Debug.Log($"PointerEnter 발생: name={slot.name}, index={index}");
         });
 
         slot.RegisterCallback<PointerLeaveEvent>(evt =>
@@ -107,7 +140,7 @@ public class InventoryUI : MonoBehaviour
 
     public void Refresh()
     {
-        var slots = GameManager.Instance.inventory.slots;
+        var slots = ScriptManager.Instance.inventory.slots;
 
         for (int i = 0; i < slotElements.Count; i++) // 모든 UI 슬롯 요소를 순회하면서 UI를 갱신
         {
@@ -118,8 +151,8 @@ public class InventoryUI : MonoBehaviour
                 if (itemData != null) // 아이템이 있는 경우
                 {
                     slotElements[i].style.backgroundImage = itemData.itemIcon.texture; // 아이콘 표시
-                    quantityLabels[i].text = $"{slots[i].quantity}/{itemData.maxStack}"; // 수량 표시
-                    Debug.Log($"[Refresh] 슬롯 {i}: {itemData.itemName} ({slots[i].quantity}/{itemData.maxStack})");
+                    quantityLabels[i].text = $"{slots[i].quantity}/{itemData.itemMaxStack}"; // 수량 표시
+                    Debug.Log($"[Refresh] 슬롯 {i}: {itemData.itemName} ({slots[i].quantity}/{itemData.itemMaxStack})");
                 }
                 else // 아이템이 없는 경우 (빈 슬롯)
                 {
@@ -135,6 +168,6 @@ public class InventoryUI : MonoBehaviour
                 Debug.Log($"[Refresh] 슬롯 {i}: 슬롯 없음");
             }
         }
-        GameManager.Instance.equipmentManager.RefreshEquipItem(); // 장비창 UI도 함께 갱신
+        ScriptManager.Instance.itemEquipmentManager.RefreshEquipItem(); // 장비창 UI도 함께 갱신
     }
 }

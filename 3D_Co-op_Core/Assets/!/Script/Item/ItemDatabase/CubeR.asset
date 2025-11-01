@@ -17,7 +17,6 @@ MonoBehaviour:
   itemType: 2
   itemPrefab: {fileID: 4441584937730617031, guid: 4062662c7a476ce4d8dd0ad2fb3f32af, type: 3}
   itemIcon: {fileID: 21300000, guid: 247a552f7af1b7246abe3df2eaf8204e, type: 3}
-  itemStack: 0
-  maxStack: 1
-  description: "\uBD89\uC740\uC0C9 \uB8E8\uBE44 \uC218\uC815. \uC0AC\uC6A9\uC2DC
-    \uD718\uB450\uB978\uB2E4."
+  itemPrice: 0
+  itemMaxStack: 1
+  itemDescription: 

@@ -1,47 +1,69 @@
-using NUnit.Framework.Interfaces;
-using UnityEditorInternal.Profiling.Memory.Experimental;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
-    public LayerMask interactableLayer;
-    GameObject hitObject;
+    [SerializeField] Transform cameraTransform;
     public float interactionRange = 3f;
+    public LayerMask interactableLayer;
+    public LayerMask playerLayer;
+
+    private GameObject hitObject;
+    private int allLayerMask;
+
+
+    private void Start()
+    {
+        allLayerMask = ~playerLayer.value; // 플레이어 레이어 제외
+    }
 
     void Update()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        GetInteractableRaycast();
+        if (Input.GetKeyDown(KeyCode.G) && Cursor.lockState == CursorLockMode.Locked)
+        { DropEquipmentItem(); }
+    }
+
+    void GetInteractableRaycast()
+    {
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
+        Debug.DrawRay(ray.origin, ray.direction * interactionRange, Color.green);
+
+        if (Physics.Raycast(ray, out hit, interactionRange, allLayerMask))
         {
             if (interactableLayer.Contains(hit.collider.gameObject.layer)) //레이어가 상호작용 레이어인지 확인
             {
-                if (hit.collider.gameObject.activeInHierarchy) //오브젝트가 활성화 되어있는지 확인
+                if (hit.collider.CompareTag("Item") && hit.collider.gameObject.activeInHierarchy) //오브젝트가 활성화 되어있는지 확인
                 {
-                    if (hit.collider.CompareTag("Item")) //태그가 아이템인지 확인
+                    if (hitObject == null || hit.collider.gameObject != hitObject) //새로운 오브젝트에 레이캐스트가 맞은경우
                     {
-                        if (hitObject == null || hit.collider.gameObject != hitObject) //새로운 오브젝트에 레이캐스트가 맞은경우
+                        hitObject = hit.collider.gameObject;
+                        ItemDataHolder itemData = hitObject.GetComponent<ItemDataHolder>();
+                        if (itemData != null)
                         {
-                            hitObject = hit.collider.gameObject;
-                            ItemDataHolder itemData = hitObject.GetComponent<ItemDataHolder>();
-                            if (itemData != null)
-                            {
-                                UIManager.Instance.objectCheckUI.ItemCheckUI(itemData);
-                            }
-                        }
-                        if (hitObject != null && Input.GetKeyDown(KeyCode.E)) //E키를 눌렀을때
-                        {
-                            PickUp(hit.collider.gameObject);
+                            UIManager.Instance.objectCheckUI.ItemCheckUI(itemData);
                         }
                     }
-                    else { ClearInteraction(); } //태그가 아이템이 아닌경우
+                    if (hitObject != null && Input.GetKeyDown(KeyCode.E)) //E키를 눌렀을때
+                    {
+                        PickUp(hit.collider.gameObject);
+                    }
                 }
-                else { ClearInteraction(); } //오브젝트가 비활성화 되어있는경우
+                else ClearInteraction(); //오브젝트가 비활성화 되어있는경우
             }
-            else { ClearInteraction(); } //레이어가 상호작용 레이어가 아닌경우
+            else ClearInteraction(); //레이어가 상호작용 레이어가 아닌경우
         }
-        else { ClearInteraction(); } //레이캐스트에 맞지 않은경우
+        else ClearInteraction(); //레이캐스트에 맞지 않은경우
+    }
+
+    void DropEquipmentItem()
+    {
+        var index = ScriptManager.Instance.itemEquipmentManager.selectedSlotIndex;
+        ScriptManager.Instance.itemDropManager.DropItem_PlayerAction();
+        ScriptManager.Instance.inventory.ClearSlot(index);
+        UIManager.Instance.inventoryUI.Refresh();
     }
 
     void ClearInteraction()
@@ -49,7 +71,6 @@ public class PlayerAction : MonoBehaviour
         hitObject = null;
         UIManager.Instance.objectCheckUI.CloseItemCheckUI();
     }
-
 
     void PickUp(GameObject itemObject)
     {
@@ -61,7 +82,7 @@ public class PlayerAction : MonoBehaviour
             return;
         }
 
-        int remainItemStack = GameManager.Instance.inventory.TryAddItem(holder.itemData, holder.currentStack);
+        int remainItemStack = ScriptManager.Instance.inventory.TryAddItem(holder.itemData, holder.currentStack);
 
         if (remainItemStack <= 0) //음수 또는 0 이면 모두 획득
         {

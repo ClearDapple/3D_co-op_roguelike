@@ -153,3 +153,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataHolder
   itemData: {fileID: 11400000, guid: 024332b636e6420479282c1aeecb0c14, type: 2}
+  currentStack: 0

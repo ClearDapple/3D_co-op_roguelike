@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class EquipmentManager : MonoBehaviour
+public class ItemEquipmentManager : MonoBehaviour
 {
     [SerializeField] Transform handTransform; // 아이템을 들 위치
-    private GameObject currentItem;           // 현재 손에 든 아이템
-    private int selectedSlotIndex = 0;    // 현재 선택된 슬롯 인덱스
+    public int selectedSlotIndex = 0; // 현재 선택된 슬롯 인덱스
+
+    private GameObject currentItem; // 현재 손에 든 아이템
 
     void Update()
     {
@@ -33,11 +34,16 @@ public class EquipmentManager : MonoBehaviour
             selectedSlotIndex = 4;
             RefreshEquipItem();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha0))// 0번 키 입력 감지 (장착 해제)
+        {
+            selectedSlotIndex = -1;
+            RefreshEquipItem();
+        }
     }
 
     public void RefreshEquipItem()
     {
-        var inventory = GameManager.Instance?.inventory;
+        var inventory = ScriptManager.Instance?.inventory;
 
         if (inventory == null || inventory.slots == null || selectedSlotIndex >= inventory.slots.Count)
         {
