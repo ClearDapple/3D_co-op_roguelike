@@ -2,23 +2,26 @@ using UnityEngine;
 
 public class ItemPickUp : MonoBehaviour
 {
-    [SerializeField] Inventory inventory;
-    [SerializeField] InventoryUI inventoryUI;
-    [SerializeField] ObjectCheckUI objectCheckUI;
-    [SerializeField] SystemMessageUI systemMessageUI;
+    private Inventory inventory;
+    private InventoryUI inventoryUI;
+    private ObjectCheckUI objectCheckUI;
+    private SystemMessageUI systemMessageUI;
 
     [SerializeField] Transform cameraTransform;
 
-    public LayerMask itemLayer;   // 아이템 레이어
-    public LayerMask playerLayer; // 플레이어 레이어
-    private int allLayerMask;     // 플레이어 제외 레이어
-
     public float interactionRange = 3f; // 상호작용 가능 거리
-    private GameObject hitObject;       // 레이캐스트 적중 오브젝트
+    public LayerMask playerLayer, itemLayer, facilityLayer; // 참고 레이어
+
+    private int allLayerMask; // 플레이어 제외 레이어
+    private GameObject hitObject; // 레이캐스트 적중 오브젝트
 
 
     private void Start()
     {
+        inventory = GetComponentInChildren<Inventory>();
+        inventoryUI = GetComponentInChildren<InventoryUI>();
+        objectCheckUI = GetComponentInChildren<ObjectCheckUI>();
+        systemMessageUI = GetComponentInChildren<SystemMessageUI>();
         allLayerMask = ~playerLayer.value; // 플레이어 레이어 제외
     }
 
@@ -36,11 +39,12 @@ public class ItemPickUp : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactionRange, allLayerMask)) //충돌했는지 확인
         {
-            if (itemLayer.Contains(hit.collider.gameObject.layer)) //레이어가 아이템 레이어인지 확인
+            #region 아이템 레이어
+            if (itemLayer.Contains(hit.collider.gameObject.layer)) //레이어 확인
             {
-                if (hit.collider.gameObject.activeInHierarchy) //오브젝트가 활성화 되어있는지 확인
+                if (hit.collider.gameObject.activeInHierarchy) //오브젝트 활성화 여부 확인
                 {
-                    if (hitObject == null || hit.collider.gameObject != hitObject) //새로운 오브젝트에 레이캐스트가 맞은경우
+                    if (hitObject == null || hit.collider.gameObject != hitObject) //새로운 오브젝트에 레이캐스트 적중
                     {
                         hitObject = hit.collider.gameObject;
                         ItemDataHolder holder = hitObject.GetComponent<ItemDataHolder>();
@@ -49,16 +53,42 @@ public class ItemPickUp : MonoBehaviour
                             objectCheckUI.ItemCheckUI(holder);
                         }
                     }
-                    if (Input.GetKeyDown(KeyCode.E))
+
+                    if (Input.GetKeyDown(KeyCode.E)) //상호작용
                     {
                         PickUp(hit.collider.gameObject);
                     }
                     return;
                 }
             }
+            #endregion
+
+    //수정중
+            #region 시설 레이어
+            if (facilityLayer.Contains(hit.collider.gameObject.layer)) //레이어 확인
+            {
+                if (hit.collider.gameObject.activeInHierarchy) //오브젝트 활성화 여부 확인
+                {
+                    if (hitObject == null || hit.collider.gameObject != hitObject) //새로운 오브젝트에 레이캐스트 적중
+                    {
+                        hitObject = hit.collider.gameObject;
+                        FacilityDataHolder holder = hitObject.GetComponent<FacilityDataHolder>();
+                        if (holder != null)
+                        {
+                            //objectCheckUI.ItemCheckUI(holder);
+                        }
+                    }
+                    if (Input.GetKeyDown(KeyCode.E)) //상호작용
+                    {
+                        //PickUp(hit.collider.gameObject);
+                    }
+                    return;
+                }
+            }
+            #endregion
         }
         if (hitObject != null) hitObject = null;
-        objectCheckUI.CloseItemCheckUI();
+        objectCheckUI.CloseObjectCheckUI();
     }
 
     void PickUp(GameObject itemObject)

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class ItemDrop : MonoBehaviour
 {
-    [SerializeField] ItemEquipment itemEquipment;
-    [SerializeField] Inventory inventory;
-    [SerializeField] InventoryUI inventoryUI;
+    private ItemEquipment itemEquipment;
+    private Inventory inventory;
+    private InventoryUI inventoryUI;
 
     [SerializeField] Transform dropPoint;  // 아이템 드롭 기본 위치
     [SerializeField] Transform dropParent; // 드롭될 아이템의 부모 오브젝트
@@ -19,6 +19,9 @@ public class ItemDrop : MonoBehaviour
 
     private void Start()
     {
+        itemEquipment = GetComponent<ItemEquipment>();
+        inventory = GetComponentInChildren<Inventory>();
+        inventoryUI = GetComponentInChildren<InventoryUI>();
         allLayerMask = ~playerLayer.value; // 플레이어 레이어 제외
     }
 

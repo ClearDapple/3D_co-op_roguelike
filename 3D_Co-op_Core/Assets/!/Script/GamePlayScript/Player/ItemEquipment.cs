@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ItemEquipment : MonoBehaviour
 {
-    [SerializeField] Inventory inventory;
+    private Inventory inventory;
 
     [SerializeField] Transform handTransform; // 아이템을 들 위치
     public int selectedSlotIndex; // 현재 선택된 슬롯 인덱스
@@ -11,6 +11,7 @@ public class ItemEquipment : MonoBehaviour
 
     private void Start()
     {
+        inventory = GetComponentInChildren<Inventory>();
         selectedSlotIndex = 0;
     }
 
