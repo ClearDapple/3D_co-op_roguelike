@@ -6,14 +6,6 @@ public class ItemDataHolder : MonoBehaviour
     public int currentStack;
     public ItemAbility itemAbility;
 
-    public enum ItemAbility
-    {
-        None,
-        infiniteDurability, //무한 내구도
-        reducedConsumption, //소모값 감소
-        IncreasedDamage,    //데미지 증가
-        IncreasedRange,     //사거리 증가
-    }
 
     public void CurrentStackCheck(int stack)
     {
@@ -24,4 +16,13 @@ public class ItemDataHolder : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+}
+
+public enum ItemAbility
+{
+    None,
+    InfiniteDurability, //무한 내구도
+    ReducedConsumption, //소모값 감소
+    IncreasedDamage,    //데미지 증가
+    IncreasedRange,     //사거리 증가
 }

@@ -4,14 +4,17 @@ using UnityEngine.UIElements;
 
 public class SystemMessageUI : MonoBehaviour
 {
+    [Header("UI - Document")]
     [SerializeField] private UIDocument uiDocument;
     private VisualElement root;
     private VisualElement ToastMessage;
     private Label Message;
 
-    private Coroutine currentRoutine;
+    [Header("Setting")]
     [SerializeField] private float fadeDuration = 0.3f;
     [SerializeField] private float showDuration = 1.5f;
+
+    private Coroutine currentRoutine;
 
     void Awake()
     {

@@ -4,11 +4,14 @@ using System.Collections;
 
 public class ResourcesPointUI : MonoBehaviour
 {
+    [Header("UI - Document")]
     [SerializeField] private UIDocument uiDocument;
     private VisualElement root;
     private Label PointNumber, AddPointNumber;
 
+    [Header("Setting")]
     public int point;
+
     private string plusMinusSigns;
     private Coroutine addPointAnimation;
 

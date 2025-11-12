@@ -2,11 +2,28 @@ using UnityEngine;
 
 public class FacilityDataHolder : MonoBehaviour
 {
-    //수정중
-    public string facilityName;
-    public ItemType itemType;      //아이템 타입
+    public FacilityDataSO facilityData;
 
 
+    public void InteractWithFacility(GameObject facility)
+    {
+        if (facilityData == null) return;
 
-    public string description;
+        switch (facilityData.facilityType)
+        {
+            case FacilityType.Store:
+                Debug.Log("스토어 작동!");
+                facility.GetComponent<Store>()?.GetStore();
+                break;
+
+            case FacilityType.Button:
+                Debug.Log("버튼 작동!");
+                //facility.GetComponent<ButtonController>()?.Activate();
+                break;
+
+            default:
+                Debug.Log("알 수 없는 시설 타입");
+                break;
+        }
+    }
 }

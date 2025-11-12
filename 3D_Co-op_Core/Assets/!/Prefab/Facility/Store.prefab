@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a5d9e9606e55b41b72cf8f613eb60c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FacilityDataHolder
-  store: {fileID: -3978411298432970225}
+  facilityData: {fileID: 11400000, guid: 2c0ca1a763a057f41a27abee45731c6c, type: 2}
 --- !u!114 &-3978411298432970225
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@
             <ui:VisualElement name="UpBox" style="flex-grow: 1; align-self: auto; justify-content: center; align-items: center; width: 100%; height: 100%;" />
             <ui:VisualElement name="DownBox" style="flex-grow: 1; align-self: auto; justify-content: flex-start; align-items: flex-start; width: 100%; height: 100%; flex-direction: row;">
                 <ui:VisualElement name="CheckContainer" style="flex-grow: 0; width: 200px; height: 50px; flex-shrink: 0; background-color: rgba(200, 200, 200, 0.78); flex-direction: row; align-items: center; visibility: visible;">
-                    <ui:VisualElement name="ObhectImg" style="flex-grow: 0; flex-shrink: 0; width: 50px; height: 50px;" />
+                    <ui:VisualElement name="ObjectImg" style="flex-grow: 0; flex-shrink: 0; width: 50px; height: 50px;" />
                     <ui:Label text="ItemName" name="ObjectName" style="width: 150px; height: 50px; -unity-text-align: middle-left; -unity-font-style: bold; font-size: 16px;" />
                 </ui:VisualElement>
             </ui:VisualElement>

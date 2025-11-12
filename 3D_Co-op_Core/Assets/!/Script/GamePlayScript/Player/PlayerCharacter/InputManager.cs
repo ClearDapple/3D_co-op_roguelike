@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] GameManager gameManager;
-    private PlayerLook playerLook;
-    private PlayerMovement playerMovement;
-    private ItemEquipment itemEquipment;
-    private ItemDrop itemDrop;
+    [Header("PlayerCharacter")]
+    [SerializeField] PlayerLook playerLook;
+    [SerializeField] PlayerMovement playerMovement;
+
+    [Header("Modules")]
+    [SerializeField] ItemEquipment itemEquipment;
+    [SerializeField] ItemDrop itemDrop;
 
     private Dictionary<KeyCode, Action> keyDownBindings;
 
+
     void Start()
     {
-        playerLook = GetComponent<PlayerLook>();
-        playerMovement = GetComponent<PlayerMovement>();
-        itemEquipment = GetComponent<ItemEquipment>();
-        itemDrop = GetComponent<ItemDrop>();
-
         keyDownBindings = new Dictionary<KeyCode, Action> //ют╥б ╫ц
         {
-            { KeyCode.Escape, () => gameManager.GetReverseSetting() },
+            //{ KeyCode.Escape, () => gameManager.GetReverseSetting() },
 
             { KeyCode.Tab, () => playerLook.GetReverseMouseLocked() },
 

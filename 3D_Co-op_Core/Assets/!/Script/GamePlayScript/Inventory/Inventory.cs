@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
-    public List<InventorySlot> slots = new List<InventorySlot>();
+    [Header("Setting")]
     public int maxSlots = 5;
+
+    public List<InventorySlot> slots = new List<InventorySlot>();
 
 
     private void Start()

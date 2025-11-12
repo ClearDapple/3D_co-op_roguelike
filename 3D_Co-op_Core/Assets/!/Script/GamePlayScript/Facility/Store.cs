@@ -2,16 +2,8 @@ using UnityEngine;
 
 public class Store : MonoBehaviour
 {
-    //수정중
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void GetStore()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("스토어 작동!!!");
     }
 }

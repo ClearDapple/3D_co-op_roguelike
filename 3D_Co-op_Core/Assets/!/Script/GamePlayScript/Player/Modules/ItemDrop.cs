@@ -2,13 +2,20 @@ using UnityEngine;
 
 public class ItemDrop : MonoBehaviour
 {
-    private ItemEquipment itemEquipment;
-    private Inventory inventory;
-    private InventoryUI inventoryUI;
+    [Header("Modules")]
+    [SerializeField] ItemEquipment itemEquipment;
 
+    [Header("UI")]
+    [SerializeField] Inventory inventory;
+    [SerializeField] InventoryUI inventoryUI;
+
+    [Header("Camera - Drop Point")]
     [SerializeField] Transform dropPoint;  // 아이템 드롭 기본 위치
+
+    [Header("World - Item")]
     [SerializeField] Transform dropParent; // 드롭될 아이템의 부모 오브젝트
 
+    [Header("Setting")]
     public float maxDistance = 3.0f;       // 아이템 드롭 거리
     public float dropOffset = 0.25f;       // 아이템 드롭 오프셋
     public LayerMask playerLayer;          // 충돌 검사용 레이어 (플레이어만 포함)
@@ -19,9 +26,6 @@ public class ItemDrop : MonoBehaviour
 
     private void Start()
     {
-        itemEquipment = GetComponent<ItemEquipment>();
-        inventory = GetComponentInChildren<Inventory>();
-        inventoryUI = GetComponentInChildren<InventoryUI>();
         allLayerMask = ~playerLayer.value; // 플레이어 레이어 제외
     }
 

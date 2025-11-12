@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController controller;
-    private Animator animator;
+    [Header("PlayerCharacter")]
+    [SerializeField] CharacterController controller;
 
+    [Header("Animator")]
+    [SerializeField] Animator animator;
+
+    [Header("Setting")]
     [SerializeField] private float moveSpeed; // 이동 속도
     public float walkSpeed = 3f;
     public float runSpeed = 4f;
@@ -17,8 +21,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
-        animator = GetComponentInChildren<Animator>();
         moveSpeed = walkSpeed;
     }
 
@@ -39,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         else animator.SetBool("isGround", false);
-
 
         // 중력 적용
         velocity.y += gravity * Time.deltaTime;

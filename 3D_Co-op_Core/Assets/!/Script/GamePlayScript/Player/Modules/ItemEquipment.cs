@@ -2,16 +2,20 @@ using UnityEngine;
 
 public class ItemEquipment : MonoBehaviour
 {
-    private Inventory inventory;
+    [Header("UI")]
+    [SerializeField] Inventory inventory;
 
+    [Header("Camera - Hand Point")]
     [SerializeField] Transform handTransform; // 아이템을 들 위치
+
+    [Header("Setting")]
     public int selectedSlotIndex; // 현재 선택된 슬롯 인덱스
+
     private GameObject currentItem; // 현재 손에 든 아이템
 
 
     private void Start()
     {
-        inventory = GetComponentInChildren<Inventory>();
         selectedSlotIndex = 0;
     }
 

@@ -5,12 +5,17 @@ using Cursor = UnityEngine.Cursor;
 
 public class InventoryUI : MonoBehaviour
 {
-    [SerializeField] ItemEquipment itemEquipment;
-    [SerializeField] ItemDrop ItemDrop;
-    [SerializeField] Inventory Inventory;
-
+    [Header("UI - Document")]
     [SerializeField] private UIDocument uiDocument;
     private VisualElement root;
+
+    [Header("Modules")]
+    [SerializeField] ItemEquipment itemEquipment;
+    [SerializeField] ItemDrop ItemDrop;
+
+    [Header("UI")]
+    [SerializeField] Inventory Inventory;
+
 
     private List<VisualElement> slotElements = new();
     private List<Label> quantityLabels = new();
