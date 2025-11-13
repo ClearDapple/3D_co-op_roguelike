@@ -18,7 +18,7 @@ public class FacilityDataHolder : MonoBehaviour
 
             case FacilityType.Button:
                 Debug.Log("버튼 작동!");
-                //facility.GetComponent<ButtonController>()?.Activate();
+                //facility.GetComponent<Button>()?.GetButton();
                 break;
 
             default:

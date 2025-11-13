@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
 
     [Header("Modules")]
     [SerializeField] ItemEquipment itemEquipment;
+    [SerializeField] ItemUse itemUse;
     [SerializeField] ItemDrop itemDrop;
 
     private Dictionary<KeyCode, Action> keyDownBindings;
@@ -32,11 +33,11 @@ public class InputManager : MonoBehaviour
             { KeyCode.Alpha5, () => itemEquipment.GetEquipment(4) },
             { KeyCode.Alpha0, () => itemEquipment.GetEquipment(-1) },
 
+            { KeyCode.Mouse0, () => itemUse.GetUseItem() },
+
             { KeyCode.G, () => itemDrop.GetDropItem() }
         };
     }
-
-
 
     void Update()
     {

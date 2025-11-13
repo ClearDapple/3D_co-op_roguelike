@@ -2,17 +2,12 @@ using UnityEngine;
 
 public class ItemDataHolder : MonoBehaviour
 {
-    public ItemDataSO itemData;
+    public CommonItemDataSO itemData;
     public int currentStack;
     public ItemAbility itemAbility;
 
 
-    public void CurrentStackCheck(int stack)
-    {
-        currentStack = stack;
-    }
-
-    public void DestorySelf()
+    public void DestroySelf()
     {
         Destroy(this.gameObject);
     }

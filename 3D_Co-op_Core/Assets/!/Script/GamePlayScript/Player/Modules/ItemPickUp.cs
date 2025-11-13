@@ -28,7 +28,7 @@ public class ItemPickUp : MonoBehaviour
         {
             Debug.Log($"[성공] {holder.itemData.itemName} 아이템 {holder.currentStack} 모두 획득함. 남은 개수 없음.");
             animator.SetTrigger("PickUp");
-            holder.DestorySelf();
+            holder.DestroySelf();
         }
         else if (remainItemStack == holder.currentStack) //남은 개수가 현재 스택과 같으면 하나도 못얻음
         {

@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c63bd8ee86eb2f469f516c29ce6e46b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fb1894526560c14d911ac1784df60cd, type: 3}
   m_Name: CubeG
-  m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::CubeG
   itemID: 2
   itemName: "\uCDA9\uC804\uD615 \uBB3C\uC57D"
   itemType: 0
   itemPrefab: {fileID: 275197814840762009, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
   itemIcon: {fileID: 21300000, guid: e5927d34bcb117e4d926ebb1f60a40ee, type: 3}
-  itemPrice: 100
-  itemDurability: 0
+  itemPrice: 50
   itemMaxStack: 2
-  itemDescription: 
+  itemDescription: "\uCCB4\uB825\uD68C\uBCF5/\uC18C\uBAA8 \uD14C\uC2A4\uD2B8\uC6A9
+    \uC544\uC774\uD15C"
+  itemHeal: 50

@@ -9,15 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c63bd8ee86eb2f469f516c29ce6e46b, type: 3}
+  m_Script: {fileID: 11500000, guid: 153f1772f64acba4a81d5c4442ae9387, type: 3}
   m_Name: CubeB
-  m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
-  itemID: 1
-  itemName: "\uC0AC\uD30C\uC774\uC5B4 \uC218\uC815"
+  m_EditorClassIdentifier: Assembly-CSharp::CubeB
+  itemID: 3
+  itemName: "\uD30C\uB780 \uC218\uC815"
   itemType: 0
   itemPrefab: {fileID: 5178742268636204790, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
   itemIcon: {fileID: 21300000, guid: 2e37dccf71c407f4d9bf6929167789ca, type: 3}
-  itemPrice: 50
-  itemDurability: 0
-  itemMaxStack: 3
-  itemDescription: 
+  itemPrice: 15
+  itemMaxStack: 5
+  itemDescription: "\uC6D0\uAC70\uB9AC\uACF5\uACA9 \uD14C\uC2A4\uD2B8\uC6A9 \uC544\uC774\uD15C"
+  itemRange: 5
+  itemDamage: 15
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256

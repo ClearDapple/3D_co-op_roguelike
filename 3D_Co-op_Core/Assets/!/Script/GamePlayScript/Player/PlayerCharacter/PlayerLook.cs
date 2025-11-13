@@ -6,7 +6,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] Transform playerTransform;   //플레이어 트랜스폼
 
     [Header("Camera")]
-    [SerializeField] Transform cameraTransform;   //카메라 트랜스폼
+    public Transform cameraTransform;   //카메라 트랜스폼
 
     [Header("Setting")]
     public float mouseSensitivity = 300f; // 마우스 감도

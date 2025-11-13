@@ -11,7 +11,7 @@ public class ItemEquipment : MonoBehaviour
     [Header("Setting")]
     public int selectedSlotIndex; // 현재 선택된 슬롯 인덱스
 
-    private GameObject currentItem; // 현재 손에 든 아이템
+    public GameObject currentItem; // 현재 손에 든 아이템
 
 
     private void Start()
