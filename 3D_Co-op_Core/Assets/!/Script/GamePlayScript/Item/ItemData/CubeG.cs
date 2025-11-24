@@ -1,12 +1,12 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CubeG", menuName = "Scriptable Objects/CubeG")]
-public class CubeG : UseableItemDataSO
+public class CubeG : ConsumeItemDataSO
 {
     [Header("UseableItemDataSO - CubeG")]
     public int itemHeal;
 
-    public override void ItemUse(GameObject player)
+    public void ItemUse(GameObject player)
     {
         // 애니메이션
         Debug.Log($"{itemName} 아이템 사용");

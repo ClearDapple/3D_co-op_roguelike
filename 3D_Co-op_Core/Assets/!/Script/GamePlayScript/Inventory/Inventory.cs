@@ -17,7 +17,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public int TryAddItem(CommonItemDataSO newItem, int itemStack)
+    public int TryAddItem(ImportanceItemDataSO newItem, int itemStack)
     {
         // 0. ºó °ø°£ °è»ê
         int emptySpace = 0;

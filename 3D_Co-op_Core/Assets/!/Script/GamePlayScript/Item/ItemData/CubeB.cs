@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CubeB", menuName = "Scriptable Objects/CubeB")]
-public class CubeB : UseableItemDataSO
+public class CubeB : rechargeItemDataSO
 {
     [Header("UseableItemDataSO - CubeB")]
     public float itemRange;
@@ -9,7 +9,7 @@ public class CubeB : UseableItemDataSO
     public LayerMask enemyLayer;
 
 
-    public override void ItemUse(GameObject player)
+    public void ItemUse(GameObject player)
     {
         Debug.Log($"{itemName} 아이템 사용");
 

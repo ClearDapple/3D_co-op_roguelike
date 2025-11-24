@@ -64,7 +64,7 @@ public class ItemEquipment : MonoBehaviour
             ItemDataHolder currentItemData = currentItem.GetComponent<ItemDataHolder>();
 
             // currentItemData가 없거나 itemID가 다르면 제거
-            if (currentItemData == null || currentItemData.itemData == null || currentItemData.itemData.itemID != slots.itemData.itemID)
+            if (currentItemData == null || currentItemData.itemData == null || currentItemData.itemData.itemName != slots.itemData.itemName)
             {
                 Destroy(currentItem);
                 currentItem = null;

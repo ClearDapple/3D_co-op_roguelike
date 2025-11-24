@@ -53,7 +53,7 @@ public class ItemDrop : MonoBehaviour
         inventoryUI.RefreshSlotUI();
     }
 
-    public void DropItem(CommonItemDataSO itemData, int quantity)
+    public void DropItem(ImportanceItemDataSO itemData, int quantity)
     {
         Vector3 dropPosition; // 아이템 드롭 위치
 

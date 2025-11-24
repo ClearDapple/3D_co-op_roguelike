@@ -17,9 +17,14 @@ public class ItemUse : MonoBehaviour
         GameObject player = transform.parent.gameObject;
         if (player == null) return;
 
-        if (holder.itemData is UseableItemDataSO usable)
+        if (holder)
         {
-            usable.ItemUse(player);
+
         }
+
+        //if (holder.itemData is UseableItemDataSO usable)
+        //{
+        //    usable.ItemUse(player);
+        //}
     }
 }

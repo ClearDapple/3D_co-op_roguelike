@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CubeR", menuName = "Scriptable Objects/CubeR")]
-public class CubeR : UseableItemDataSO
+public class CubeR : DurabilityItemDataSO
 {
     [Header("UseableItemDataSO - CubeR")]
     public float itemRange;
@@ -16,7 +16,7 @@ public class CubeR : UseableItemDataSO
     private Vector3 attackCenter;
 
 
-    public override void ItemUse(GameObject player)
+    public void ItemUse(GameObject player)
     {
         Debug.Log($"{itemName} 아이템 사용");
 

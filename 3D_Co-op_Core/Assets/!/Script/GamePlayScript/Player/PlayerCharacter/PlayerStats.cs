@@ -29,6 +29,8 @@ public class PlayerStats : MonoBehaviour
 
     public void PlayerDead()
     {
+        currentHP = 0;
+        //사망 상태로 변경
         Debug.Log("플레이어 사망함.");
     }
 }
