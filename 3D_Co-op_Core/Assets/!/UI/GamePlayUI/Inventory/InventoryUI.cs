@@ -11,11 +11,10 @@ public class InventoryUI : MonoBehaviour
 
     [Header("Modules")]
     [SerializeField] ItemEquipment itemEquipment;
-    [SerializeField] ItemDrop ItemDrop;
+    [SerializeField] ItemDrop itemDrop;
 
     [Header("UI")]
-    [SerializeField] Inventory Inventory;
-
+    [SerializeField] Inventory inventory;
 
     private List<VisualElement> slotElements = new();
     private List<Label> quantityLabels = new();
@@ -63,7 +62,7 @@ public class InventoryUI : MonoBehaviour
                 return;
             }
 
-            if (Inventory.slots[draggedIndex].itemData == null)
+            if (inventory.slots[draggedIndex].holder == null)
             {
                 Debug.Log($"[실패] {draggedIndex + 1}번 슬롯은 빈 슬롯 입니다.");
                 ClearSlotTopColor();
@@ -75,21 +74,20 @@ public class InventoryUI : MonoBehaviour
                 if (hoveredSlot != null)
                 {
                     Debug.Log($"슬롯 교환 시도: {draggedIndex + 1} ↔ {hoveredIndex + 1}");
-                    Inventory.SwapSlots(draggedIndex, hoveredIndex);
-                    RefreshSlotUI();
+                    inventory.SwapSlots(draggedIndex, hoveredIndex);
                 }
                 else
                 {
                     Debug.Log($"슬롯 아이템 드롭 시도: {draggedIndex + 1} ↔ 드롭됨");
-                    var slots = Inventory.slots[draggedIndex];
-                    var itemData = slots.itemData;
-                    var quantity = slots.quantity;
+                    var slots = inventory.slots[draggedIndex];
+                    var itemData = slots.holder.itemData;
+                    var quantity = slots.holder.currentStack;
 
                     Debug.Log($"[아이템 드롭됨] {draggedIndex + 1}번 슬롯: {itemData.itemName} x{quantity}");
-                    ItemDrop.DropItem(itemData, quantity);
-                    Inventory.ClearSlot(draggedIndex);
-                    RefreshSlotUI();
+                    itemDrop.DropItem(itemData, quantity);
+                    inventory.ClearSlot(draggedIndex);
                 }
+                RefreshSlotUI();
             }
             ClearSlotTopColor();
         });
@@ -103,7 +101,6 @@ public class InventoryUI : MonoBehaviour
             draggedSlot = null;
             draggedIndex = -1;
         }
-
         hoveredSlot = null;
     }
 
@@ -115,7 +112,7 @@ public class InventoryUI : MonoBehaviour
         {
             if (Cursor.lockState == CursorLockMode.Locked) return;
 
-            if (index < 0 || Inventory.slots.Count <= index) return;
+            if (index < 0 || inventory.slots.Count <= index) return;
 
             Debug.Log($"슬롯 {index+1} 클릭됨");
             draggedSlot = slot;
@@ -124,9 +121,9 @@ public class InventoryUI : MonoBehaviour
             // 인덱스 유효성 검사
 
             // 드래그 아이콘 표시
-            if (Inventory.slots[index].itemData != null)
+            if (inventory.slots[index].holder != null)
             {
-                var itemData = Inventory.slots[index].itemData;
+                var itemData = inventory.slots[index].holder.itemData;
                 DragIconController.instance.Show(itemData.itemIcon);
             }
 
@@ -158,33 +155,62 @@ public class InventoryUI : MonoBehaviour
 
     public void RefreshSlotUI()
     {
-        var slots = Inventory.slots;
+        var slots = inventory.slots;
+        string debugLog = "[RefreshSlotUI] 슬롯 상태: ";
 
         for (int i = 0; i < slotElements.Count; i++) // 모든 UI 슬롯 요소를 순회하면서 UI를 갱신
         {
             if (i < slots.Count && slots[i] != null) // 슬롯이 존재하는 경우
             {
-                var itemData = slots[i].itemData;
-                if (itemData != null) // 아이템이 있는 경우
+                var holder = slots[i].holder;
+                if (holder != null && holder.itemData != null) // 아이템이 있는 경우
                 {
+                    var itemData = holder.itemData;
                     slotElements[i].style.backgroundImage = itemData.itemIcon.texture; // 아이콘 표시
-                    quantityLabels[i].text = $"{slots[i].quantity}/{itemData.itemMaxStack}"; // 수량 표시
-                    Debug.Log($"[Refresh] 슬롯 {i}: {itemData.itemName} ({slots[i].quantity}/{itemData.itemMaxStack})");
+
+                    switch (itemData.itemType)
+                    {
+                        case ItemType.ImportanceItem:// 중요 아이템
+                            quantityLabels[i].text = ""; // 텍스트 제거
+                            debugLog += $"\n슬롯 {i + 1}: {itemData.itemName}[중요 아이템]";
+                            break;
+
+                        case ItemType.rechargeItem:// 충전 아이템
+                            quantityLabels[i].text = $"{holder.currentReloadCount}/{itemData.maxReloadCount}"; // 충전량 표시
+                            debugLog += $"\n슬롯 {i + 1}: {itemData.itemName}[충전 아이템] ({holder.currentReloadCount}/{itemData.maxReloadCount})";
+                            break;
+
+                        case ItemType.DurabilityItem:// 내구도 아이템
+                            quantityLabels[i].text = $"{holder.currentDurability}/{itemData.maxDurability}"; // 내구도 표시
+                            debugLog += $"\n슬롯 {i + 1}: {itemData.itemName}[내구도 아이템] ({holder.currentDurability}/{itemData.maxDurability})";
+                            break;
+
+                        case ItemType.ConsumeItem:// 소모 아이템
+                            quantityLabels[i].text = $"{holder.currentStack}/{itemData.itemMaxStack}"; // 수량 표시
+                            debugLog += $"\n슬롯 {i + 1}: {itemData.itemName}[소모 아이템] ({holder.currentStack}/{itemData.itemMaxStack})";
+                            break;
+
+                        default:// 기타 아이템(예외상황)
+                            quantityLabels[i].text = ""; // 텍스트 제거
+                            debugLog += $"\n슬롯 {i + 1}: {itemData.itemName}[기타 아이템(예외상황)]";
+                            break;
+                    }
                 }
                 else // 아이템이 없는 경우 (빈 슬롯)
                 {
                     slotElements[i].style.backgroundImage = null; // 아이콘 제거
-                    quantityLabels[i].text = ""; // 수량 제거
-                    Debug.Log($"[Refresh] 슬롯 {i}: 빈 슬롯");
+                    quantityLabels[i].text = ""; // 텍스트 제거
+                    debugLog += $"\n슬롯 {i + 1}: 빈 슬롯";
                 }
             }
             else // 슬롯 자체가 없거나 범위를 벗어난 경우
             {
                 slotElements[i].style.backgroundImage = null; // 아이콘 제거
-                quantityLabels[i].text = ""; // 수량 제거
-                Debug.Log($"[Refresh] 슬롯 {i}: 슬롯 없음");
+                quantityLabels[i].text = ""; // 텍스트 제거
+                debugLog += $"\n슬롯 {i + 1}: 슬롯 없음";
             }
         }
+        Debug.Log($"{debugLog}");
         itemEquipment.RefreshEquipItem(); // 착용 아이템도 함께 갱신
     }
 }

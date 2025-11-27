@@ -1,17 +1,17 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CubeB", menuName = "Scriptable Objects/CubeB")]
-public class CubeB : rechargeItemDataSO
+public class CubeB : ItemDataSO
 {
-    [Header("UseableItemDataSO - CubeB")]
-    public float itemRange;
-    public int itemDamage;
-    public LayerMask enemyLayer;
-
-
-    public void ItemUse(GameObject player)
+    public override void ItemUse(GameObject player, ItemDataHolder myHolder)
     {
+        //장전 여부 체크
+        if (myHolder.currentReloadCount <= 0)
+        {
+            Debug.Log($"{itemName} 아이템 충전량 부족 ({myHolder.currentReloadCount}/{maxReloadCount})");
+        }
         Debug.Log($"{itemName} 아이템 사용");
+
 
         //애니메이션
         Animator animator = player.GetComponentInChildren<Animator>();
@@ -23,11 +23,11 @@ public class CubeB : rechargeItemDataSO
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         RaycastHit hit;
 
-        Debug.DrawRay(ray.origin, ray.direction * itemRange, Color.blue, 3f, true);
+        Debug.DrawRay(ray.origin, ray.direction * itemDistance, Color.blue, 2f, true);
 
-        int appliedDamage = itemDamage;
+        int appliedDamage = itemPower;
 
-        if (Physics.Raycast(ray, out hit, itemRange, enemyLayer)) //충돌 감지 확인
+        if (Physics.Raycast(ray, out hit, itemPower, targetLayer)) //충돌 감지 확인
         {
             GameObject target = hit.collider.gameObject;
             if (!target.activeInHierarchy) return;
@@ -38,6 +38,8 @@ public class CubeB : rechargeItemDataSO
             if (holder != null)
             {
                 holder.TakeDamage(appliedDamage);
+                myHolder.currentReloadCount = Mathf.Clamp(myHolder.currentReloadCount--, 0, maxReloadCount);
+                player.GetComponentInChildren<ItemUse>()?.rechargeItem();
             }
             else
             {
@@ -45,6 +47,8 @@ public class CubeB : rechargeItemDataSO
                 if (holder != null)
                 {
                     holder.TakeDamage(appliedDamage);
+                    myHolder.currentReloadCount = Mathf.Clamp(myHolder.currentReloadCount--, 0, maxReloadCount);
+                    player.GetComponentInChildren<ItemUse>()?.rechargeItem();
                 }
             }
         }

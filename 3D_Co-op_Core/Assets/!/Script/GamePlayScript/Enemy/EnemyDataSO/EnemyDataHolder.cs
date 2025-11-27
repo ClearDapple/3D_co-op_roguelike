@@ -3,21 +3,18 @@ using UnityEngine;
 public class EnemyDataHolder : MonoBehaviour
 {
     public EnemyDataSO enemyData;
-    
     public int currentHP;
-    public int maxHP;
 
 
     private void Start()
     {
-        maxHP = enemyData.enemyMaxHP;
-        currentHP = maxHP;
+        currentHP = enemyData.enemyMaxHP;
     }
 
     public void TakeDamage(int damage)
     {
         var temp = currentHP;
-        currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
+        currentHP = Mathf.Clamp(currentHP - damage, 0, enemyData.enemyMaxHP);
         Debug.Log($"[피격] 몬스터:{enemyData.enemyName} {damage} 피해입음.\n" + $"[{enemyData.enemyName}] HP: {temp} > {currentHP}");
 
         if (currentHP <= 0)
@@ -30,7 +27,7 @@ public class EnemyDataHolder : MonoBehaviour
     public void TakeHeal(int heal)
     {
         var temp = currentHP;
-        currentHP = Mathf.Clamp(currentHP + heal, 0, maxHP);
+        currentHP = Mathf.Clamp(currentHP + heal, 0, enemyData.enemyMaxHP);
         Debug.Log($"[회복] 몬스터:{enemyData.enemyName} {heal}({currentHP - temp}) 회복함.\n" + $"[{enemyData.enemyName}] HP: {temp} > {currentHP}");
     }
 

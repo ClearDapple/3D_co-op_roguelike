@@ -2,17 +2,17 @@ using UnityEngine;
 
 public interface IItemEffect
 {
-    void Apply(GameObject player);
+    void Apply(GameObject target);
 }
 
 [System.Serializable]
 public class AttackEffect : IItemEffect
 {
     public int damageAmount;
-    public void Apply(GameObject player)
+    public void Apply(GameObject monster)
     {
-        if (player == null) return;
-        PlayerStats playerStats = player.GetComponent<PlayerStats>();
+        if (monster == null) return;
+        PlayerStats playerStats = monster.GetComponent<PlayerStats>();
         if (playerStats == null) return;
         playerStats.TakeDamage(damageAmount);
     }

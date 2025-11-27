@@ -34,17 +34,17 @@ public class ItemDrop : MonoBehaviour
         if (Cursor.lockState != CursorLockMode.Locked) return;
 
         var index = itemEquipment.selectedSlotIndex;
-        if (inventory.slots.Count <=index || index < 0) return;
+        if (inventory.slots.Count <= index || index < 0) return;
         if (inventory.slots[index] == null) return;
 
         var slot = inventory.slots[index];
-        if (slot.itemData == null || slot.quantity <= 0)
+        if (slot.holder == null || slot.holder.itemData == null || slot.holder.currentStack <= 0)
         {
             Debug.Log($"[실패] {index + 1}번 아이템 드롭 불가능.");
             return;
         }
-        var itemData = slot.itemData;
-        var quantity = slot.quantity;
+        var itemData = slot.holder.itemData;
+        var quantity = slot.holder.currentStack;
         DropItem(itemData, quantity);
 
         itemEquipment.GetEquipment(-1);
@@ -53,7 +53,7 @@ public class ItemDrop : MonoBehaviour
         inventoryUI.RefreshSlotUI();
     }
 
-    public void DropItem(ImportanceItemDataSO itemData, int quantity)
+    public void DropItem(ItemDataSO itemData, int quantity)
     {
         Vector3 dropPosition; // 아이템 드롭 위치
 

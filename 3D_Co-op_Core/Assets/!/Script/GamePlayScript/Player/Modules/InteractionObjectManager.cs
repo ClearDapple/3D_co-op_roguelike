@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class InteractionObjectManager : MonoBehaviour
 {
@@ -18,13 +19,13 @@ public class InteractionObjectManager : MonoBehaviour
         {
             interactableRaycastManager.hitObject = target;
             ItemDataHolder holder = target.GetComponent<ItemDataHolder>();
-            if (holder != null)
+            if (holder != null || holder.itemData != null)
             {
                 objectCheckUI.ItemCheckUI(holder); //æ∆¿Ã≈€ UI «•Ω√
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E)) //æ∆¿Ã≈€ »πµÊ
+        if (Input.GetKeyDown(KeyCode.E) && target != null) //æ∆¿Ã≈€ »πµÊ
         {
             itemPickUp.PickUp(target);
         }

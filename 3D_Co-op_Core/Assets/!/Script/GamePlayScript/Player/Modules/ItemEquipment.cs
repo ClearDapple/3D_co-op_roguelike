@@ -36,7 +36,7 @@ public class ItemEquipment : MonoBehaviour
 
     public void RefreshEquipItem()
     {
-        var index = selectedSlotIndex;
+        int index = selectedSlotIndex;
 
         if (inventory.slots == null || index >= inventory.slots.Count || index < 0)
         {
@@ -48,7 +48,7 @@ public class ItemEquipment : MonoBehaviour
         var slots = inventory.slots[index];
 
         // 슬롯이 null이거나 아이템 데이터가 없으면 제거 후 종료
-        if (slots == null || slots.itemData == null || slots.itemData.itemPrefab == null)
+        if (slots == null || slots.holder == null || slots.holder.itemData || slots.holder.itemData.itemPrefab == null)
         {
             if (currentItem != null)
             {
@@ -61,10 +61,10 @@ public class ItemEquipment : MonoBehaviour
         // 현재 아이템이 존재할 경우 중복 장착 방지
         if (currentItem != null)
         {
-            ItemDataHolder currentItemData = currentItem.GetComponent<ItemDataHolder>();
+            ItemDataHolder currentItemHolder = currentItem.GetComponent<ItemDataHolder>();
 
-            // currentItemData가 없거나 itemID가 다르면 제거
-            if (currentItemData == null || currentItemData.itemData == null || currentItemData.itemData.itemName != slots.itemData.itemName)
+            // currentItemData가 없거나 itemName이 다르면 제거
+            if (currentItemHolder == null || currentItemHolder.itemData == null || currentItemHolder.itemData.itemName != slots.holder.itemData.itemName)
             {
                 Destroy(currentItem);
                 currentItem = null;
@@ -73,7 +73,7 @@ public class ItemEquipment : MonoBehaviour
         }
 
         // 아이템 인스턴스 생성 후 손에 장착
-        currentItem = Instantiate(slots.itemData.itemPrefab, handTransform);
+        currentItem = Instantiate(slots.holder.itemData.itemPrefab, handTransform);
         currentItem.transform.localPosition = Vector3.zero;
         currentItem.transform.localRotation = Quaternion.identity;
 

@@ -449,6 +449,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2928531716237140625, guid: a041a9568e8af3d4da44bf52b2755875, type: 3}
   m_PrefabInstance: {fileID: 442733886}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &504913861 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6683333776952661593, guid: c9c92241b440e1f479ed150764574443, type: 3}
+  m_PrefabInstance: {fileID: 6644989737588850688}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84e8376f07ebe244abd6ceb0ad758ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryUI
+--- !u!114 &504913862 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5634318091927376444, guid: c9c92241b440e1f479ed150764574443, type: 3}
+  m_PrefabInstance: {fileID: 6644989737588850688}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e898b19cb23ae4496ea5f84e3cfdbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
 --- !u!1 &514765046
 GameObject:
   m_ObjectHideFlags: 0
@@ -2347,6 +2369,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemUse
   itemEquipment: {fileID: 2083606471}
+  inventory: {fileID: 504913862}
+  inventoryUI: {fileID: 504913861}
+--- !u!114 &2083606474 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6352469298742777459, guid: c9c92241b440e1f479ed150764574443, type: 3}
+  m_PrefabInstance: {fileID: 6644989737588850688}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083606467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecaed6fd27fa8bb4c94710fb8e36b579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDrop
 --- !u!1001 &2084442321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2605,6 +2640,10 @@ PrefabInstance:
       propertyPath: itemUse
       value: 
       objectReference: {fileID: 2083606473}
+    - target: {fileID: 5634318091927376444, guid: c9c92241b440e1f479ed150764574443, type: 3}
+      propertyPath: inventoryUI
+      value: 
+      objectReference: {fileID: 504913861}
     - target: {fileID: 6122144188668014924, guid: c9c92241b440e1f479ed150764574443, type: 3}
       propertyPath: animator
       value: 
@@ -2613,6 +2652,14 @@ PrefabInstance:
       propertyPath: dropParent
       value: 
       objectReference: {fileID: 2122472955}
+    - target: {fileID: 6683333776952661593, guid: c9c92241b440e1f479ed150764574443, type: 3}
+      propertyPath: itemDrop
+      value: 
+      objectReference: {fileID: 2083606474}
+    - target: {fileID: 6683333776952661593, guid: c9c92241b440e1f479ed150764574443, type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 504913862}
     - target: {fileID: 7562759387699004678, guid: c9c92241b440e1f479ed150764574443, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2681,8 +2728,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73e1d190bc84f04fbd995ebfb985b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  maxHP: 100
-  currentHP: 100
+  maxHP: 150
+  currentHP: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

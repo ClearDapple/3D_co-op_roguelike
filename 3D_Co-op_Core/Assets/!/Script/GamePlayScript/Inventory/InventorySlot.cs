@@ -1,15 +1,19 @@
 public class InventorySlot
 {
-    public ImportanceItemDataSO itemData;
-    public int quantity; // 현재 수량
+    public ItemDataHolder holder;
 
-    public bool IsFull => itemData != null && quantity >= itemData.itemMaxStack;
 
-    public bool IsEmpty => itemData == null || quantity <= 0;
+    public bool IsFull => holder != null
+                          && holder.itemData != null
+                          && holder.currentStack >= holder.itemData.itemMaxStack;
 
-    public bool IsSameItem(ImportanceItemDataSO other)
+    public bool IsEmpty => holder == null
+                           || holder.itemData == null
+                           || holder.currentStack <= 0;
+
+    public bool IsSameItem(ItemDataSO other)
     {
-        if (itemData == null || other == null) return false;
-        return itemData.itemName == other.itemName;
+        if (holder == null || holder.itemData == null || other == null) return false;
+        return holder.itemData.itemName == other.itemName;
     }
 }

@@ -12,13 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fb1894526560c14d911ac1784df60cd, type: 3}
   m_Name: CubeG
   m_EditorClassIdentifier: Assembly-CSharp::CubeG
-  itemID: 2
-  itemName: "\uCDA9\uC804\uD615 \uBB3C\uC57D"
-  itemType: 0
+  itemName: "\uD68C\uBCF5 \uBB3C\uC57D"
+  itemType: 3
   itemPrefab: {fileID: 275197814840762009, guid: 873ad51e28edec748af2b7d7043ffdee, type: 3}
   itemIcon: {fileID: 21300000, guid: e5927d34bcb117e4d926ebb1f60a40ee, type: 3}
   itemPrice: 50
-  itemMaxStack: 2
+  itemMaxStack: 3
   itemDescription: "\uCCB4\uB825\uD68C\uBCF5/\uC18C\uBAA8 \uD14C\uC2A4\uD2B8\uC6A9
     \uC544\uC774\uD15C"
-  itemHeal: 50
+  itemPower: 10
+  itemDistance: 0
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  maxReloadCount: 0
+  redResources: 0
+  greenResources: 0
+  blueResources: 0
+  maxDurability: 0
